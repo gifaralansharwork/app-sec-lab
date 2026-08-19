@@ -72,7 +72,7 @@ jobs:
           chmod +x cortexcli
       - name: Run Cortex CLI Image Scan
         run: |
-          ./cortexcli --api-base-url "${CORTEX_API_URL}" --api-key "${CORTEX_API_KEY}" --api-key-id "${CORTEX_API_KEY_ID}" \
+          ./cortexcli --upload-mode upload --api-base-url "${CORTEX_API_URL}" --api-key "${CORTEX_API_KEY}" --api-key-id "${CORTEX_API_KEY_ID}" \
             image scan cicd-lab:${{ github.sha }}
 
   deploy:
