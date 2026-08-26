@@ -57,24 +57,6 @@ jobs:
             --source "GITHUB_ACTIONS" \
             --repo-url "${{ github.server_url }}/${{ github.repository }}"
 
-  # cortex-image-scan:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Build Docker image
-  #       run: docker build -t cicd-lab:${{ github.sha }} .
-  #     - name: Download cortexcli
-  #       run: |
-  #         crtx_resp=$(curl "${CORTEX_API_URL}/public_api/v1/unified-cli/releases/download-link?os=linux&architecture=amd64" \
-  #           -H "x-xdr-auth-id: ${CORTEX_API_KEY_ID}" -H "Authorization: ${CORTEX_API_KEY}")
-  #         curl -o cortexcli $(echo $crtx_resp | jq -r ".signed_url")
-  #         chmod +x cortexcli
-  #     - name: Run Cortex CLI Image Scan
-  #       run: |
-  #         ./cortexcli --upload-mode upload --api-base-url "${CORTEX_API_URL}" --api-key "${CORTEX_API_KEY}" --api-key-id "${CORTEX_API_KEY_ID}" \
-  #           image scan cicd-lab:${{ github.sha }}
-
   cortex-image-scan:
     needs: build
     runs-on: ubuntu-latest
@@ -91,7 +73,7 @@ jobs:
       - name: Run Cortex CLI Image Scan
         run: |
           ./cortexcli --upload-mode upload --api-base-url "${CORTEX_API_URL}" --api-key "${CORTEX_API_KEY}" --api-key-id "${CORTEX_API_KEY_ID}" \
-            image scan python:2.7
+            image scan cicd-lab:${{ github.sha }}
 
   deploy:
     needs: [cortex-code-scan, cortex-image-scan]

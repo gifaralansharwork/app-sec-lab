@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:2.7
 
 WORKDIR /app
 COPY requirements.txt .
